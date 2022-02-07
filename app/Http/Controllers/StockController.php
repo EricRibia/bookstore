@@ -23,10 +23,7 @@ class StockController extends BaseController
         $books = $this->AddStockStatusToStock($books, 'quantity');
         $msg = sprintf('Available books is %d', $books->count());
 
-        $stock_status = StockStatus::where('min', '>=', 7)
-            ->where('max', '<', 7)->get();
-
-        return $this->sendSuccess($msg, $stock_status);
+        return $this->sendSuccess($msg, $books);
     }
 
     public function stockHistory($id)

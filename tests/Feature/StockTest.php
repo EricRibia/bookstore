@@ -38,6 +38,18 @@ class StockTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function test_books_have_stock_status_field()
+    {
+        $author = Author::factory()->create();
+
+        Book::factory()->create([
+            'author_id' => $author->id, 'quantity' => 20]);
+
+        $response = $this->get('/api/stock');
+
+        $response->assertJsonFragment(['stock_status' => 'status unknown']);
+    }
+
     public function test_filter_stock_by_author()
     {
         $authors = ['Eric', 'JamboPay', 'Anne', 'Claire', 'Margaret', 'Liz'];

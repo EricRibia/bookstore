@@ -16,13 +16,24 @@ class StockStatus extends Model
     public static function getStockStatus($quantity)
     {
 
-        $stock_status = self::where('min', '>=', $quantity)
-            ->where('max', '<', $quantity)->first();
+        $stock_status = self::where('min', '<=', $quantity)
+            ->where('max', '>', $quantity)->first();
 
         if ($stock_status) {
             return $stock_status->message;
         } else {
-            return 'Status unknown';
+            $stock_status = self::where('min', '<=', $quantity)
+                ->where('max', null)->first();
+            if ($stock_status) {
+                return $stock_status->message;
+            } else {
+                $stock_status = self::where('max', '>=', $quantity)
+                    ->where('min', null)->first();
+                if ($stock_status) {
+                    return $stock_status->message;
+                }
+            }
+            return 'status unknown';
         }
     }
 }
