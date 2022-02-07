@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Author extends Model
+{
+    use HasFactory;
+
+    protected $guarded = [];
+
+    public $timestamps = false;
+
+    public function books()
+    {
+        return $this->hasMany(Book::class);
+    }
+
+    public function addNewStockToAuthor($book)
+    {
+        // $user['company_id'] = 1;
+        return $this->books()->create($book);
+
+    }
+}
